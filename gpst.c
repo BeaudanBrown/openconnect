@@ -901,6 +901,12 @@ static int check_or_submit_hip_report(struct openconnect_info *vpninfo, const ch
 	free(vpninfo->urlpath);
 	vpninfo->urlpath = orig_path;
 
+	/* Print the response body if present */
+	if (result >= 0 && xml_buf) {
+		vpn_progress(vpninfo, PRG_INFO, _("Response body from %s:\n%s\n"),
+			     report ? "hipreport.esp" : "hipreportcheck.esp", xml_buf);
+	}
+
 	if (result >= 0)
 		result = gpst_xml_or_error(vpninfo, xml_buf, report ? NULL : parse_hip_report_check, NULL, NULL);
 
